@@ -20,10 +20,12 @@ export type IStaticExercise = {
 
 // Code context
 export enum ITestCaseStatus {
-  PASSED, // verde
-  FAILED, // rojo
-  TIMEOUT, // amarillo
-  EMPTY, // gris
+  PASSED = "passed", // verde
+  FAILED = "failed", // rojo
+  ERROR = "error", // negro
+  TIMEOUT = "timeout expired", // amarillo
+  CANCELED = "canceled", // naranjo
+  EMPTY = "empty", // gris
 }
 
 /** Non-changing data of a test case */
@@ -37,24 +39,30 @@ export type ITestCaseStateInfo = {
 
 /** Changing data of a test case */
 export type ITestCaseResult = {
-  id: string;
   status: ITestCaseStatus;
   output: string[];
   error: string[];
+  time: number;
 };
 
 /** State of the global testcase */
 export type ICodeContext = {
   ready: boolean;
   testCases: ITestCaseStateInfo[];
-  testCaseResults: ITestCaseResult[];
+  testCaseResults: { [id: string]: ITestCaseResult };
+  runCode: (options: { files: IFileObj, test: ITestCase }) => void;
 };
 
 // Client
 
+export type IFileObj = {
+  name: string;
+  content: string;
+};
+
 export type IRunCodeTestGlobal = {
   /** archivos del alumno */
-  files: { name: string; content: string }[];
+  files: IFileObj[];
 };
 
 /** Payload of the event that is emitted when a test case is executed. */
@@ -82,6 +90,13 @@ export type IRunCodeStatus = {
   status: IRunCodeState;
 };
 
+export enum IRunCodeTestResult {
+  OK,
+  TIMEOUT,
+  ERROR,
+  CANCELED,
+}
+
 export type IRunCodeTestOutput = {
   /** identificador del test case */
   id: string;
@@ -90,7 +105,6 @@ export type IRunCodeTestOutput = {
   /** tiempo de ejecución */
   time: number;
   /** error */
-  ok: boolean;
-  error: string;
-  canceled: boolean;
+  result: IRunCodeTestResult;
+  error: string[];
 };
