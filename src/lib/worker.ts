@@ -1,8 +1,8 @@
 /// <reference lib="webworker" />
-import type { PyodideInterface } from "pyodide";
+import type { PyodideInterface } from 'pyodide';
 
-let isRunning = false;
-let output = [];
-let error = [];
-let input = [];
+const isRunning = false;
+const output = [];
+const error = [];
+const input = [];
 let interruptBuffer;

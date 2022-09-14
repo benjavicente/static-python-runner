@@ -20,12 +20,12 @@ export type IStaticExercise = {
 
 // Code context
 export enum ITestCaseStatus {
-  PASSED = "passed", // verde
-  FAILED = "failed", // rojo
-  ERROR = "error", // negro
-  TIMEOUT = "timeout expired", // amarillo
-  CANCELED = "canceled", // naranjo
-  EMPTY = "empty", // gris
+  PASSED = 'passed', // verde
+  FAILED = 'failed', // rojo
+  ERROR = 'error', // negro
+  TIMEOUT = 'timeout expired', // amarillo
+  CANCELED = 'canceled', // naranjo
+  EMPTY = 'empty', // gris
 }
 
 /** Non-changing data of a test case */
