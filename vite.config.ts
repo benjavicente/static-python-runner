@@ -6,6 +6,8 @@ import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), crossOriginIsolation()],
+  // ADd base path in production
+  base: process.env.BASE_URL || "/",
   // Add ts files
   resolve: {
     alias: {

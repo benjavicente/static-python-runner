@@ -37,6 +37,8 @@ jobs:
       - run: pnpm install
 
       - run: pnpm run build
+        env:
+          BASE_URL: github.event.repository.name
 
       - uses: actions/upload-pages-artifact@v1
         with:
