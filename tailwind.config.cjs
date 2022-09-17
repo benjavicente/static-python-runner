@@ -4,7 +4,11 @@ module.exports = {
     "./src/**/*.tsx"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "code": "#191D24",
+      },
+    },
   },
-  plugins: [require("daisyui")],
+  plugins: [require('@tailwindcss/typography'), require("daisyui")],
 }

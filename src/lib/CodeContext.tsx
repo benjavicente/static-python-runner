@@ -27,7 +27,7 @@ async function loadTestCasesInfo(url: string) {
       test: {
         id: testCase.id,
         files: zip,
-        startingCode: testCase.startingCode,
+        entrypoint: testCase.startingCode.replace(/\.py$/, ''),
         input: testCase.input,
       },
     };
@@ -54,6 +54,8 @@ export default function CodeProvider({ url, ...props }) {
   const [testCaseResults, setTestCaseResults] = useState<ICodeContext['testCaseResults']>({});
   const [ready, setReady] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
+  const [currentTestCaseIndex, setCurrentTestCaseIndex] = useState(-1);
+  const [files, setFiles] = useState<IFileObj[]>([]);
 
   useEffect(() => {
     loadTestCasesInfo(url).then((testCasesInfo) => {
@@ -71,9 +73,12 @@ export default function CodeProvider({ url, ...props }) {
       let status: ITestCaseStatus;
       switch (result) {
         case IRunCodeTestResult.OK:
+          console.log('ok');
+          console.log(event.data)
+          console.log(testCases)
           const expectedOutput = testCases.find((testCase) => testCase.test.id === id)?.expectedOutput;
           if (expectedOutput) {
-            const eqOutput = output.every((line, i) => line === expectedOutput[i]);
+            const eqOutput = expectedOutput.every((line, i) => line === output[i]);
             status = eqOutput ? ITestCaseStatus.PASSED : ITestCaseStatus.FAILED;
             break;
           }
@@ -91,6 +96,7 @@ export default function CodeProvider({ url, ...props }) {
           status = ITestCaseStatus.EMPTY;
           break;
       }
+      console.log('status', status);
       setTestCaseResults((results) => ({
         ...results,
         [id]: {
@@ -98,21 +104,36 @@ export default function CodeProvider({ url, ...props }) {
         },
       }));
     };
-    worker.addEventListener('message', onMessage);
 
+    //! FIX!: Asignar siguiente tarea
+    if (0 <= currentTestCaseIndex && currentTestCaseIndex < testCases.length - 1) {
+      setCurrentTestCaseIndex(currentTestCaseIndex + 1);
+      const test = testCases[currentTestCaseIndex + 1].test;
+      setTestCaseResults((results) => ({ ...results, [test.id]: { ...results[test.id], status: ITestCaseStatus.EMPTY } }));
+      worker.postMessage({ cmd: 'run', files, test });
+    } else {
+      setCurrentTestCaseIndex(-1);
+    }
+
+
+    worker.addEventListener('message', onMessage);
     return () => worker.removeEventListener('message', onMessage);
-  }, []);
+  }, [testCases, setTestCaseResults, currentTestCaseIndex, files]);
 
   const runCode = useCallback((files: IFileObj[]) => {
-    // TODO
+    // TODO: task queque
+    console.log('Running files', files);
     interruptBuffer[0] = 0;
     setIsRunning(true);
-    testCases.map(({ test }) => {
-      // Change every test case status to empty
-      setTestCaseResults((results) => ({ ...results, [test.id]: { ...results[test.id], status: ITestCaseStatus.EMPTY } }));
-      worker.postMessage({ files, test });
-    });
-  }, [worker]);
+
+    //! FIX: Partir de la tarea 0
+    setFiles(files);
+    setCurrentTestCaseIndex(0);
+    const test = testCases[0].test;
+    setTestCaseResults((results) => ({ ...results, [test.id]: { ...results[test.id], status: ITestCaseStatus.EMPTY } }));
+    worker.postMessage({ cmd: 'run', files, test });
+
+  }, [worker, testCases, currentTestCaseIndex, setFiles]);
 
   const interruptCode = useCallback(() => {
     // TODO

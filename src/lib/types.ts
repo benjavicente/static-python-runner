@@ -50,7 +50,7 @@ export type ICodeContext = {
   ready: boolean;
   testCases: ITestCaseStateInfo[];
   testCaseResults: { [id: string]: ITestCaseResult };
-  runCode: (options: { files: IFileObj, test: ITestCase }) => void;
+  runCode: (files: IFileObj[]) => void;
 };
 
 // Client
@@ -71,8 +71,8 @@ export type ITestCase = {
   id: string;
   /** stdin */
   input: string[];
-  /** código que se corre  */
-  startingCode: string;
+  /** módulo de python que se corre  */
+  entrypoint: string;
   /** archivos */
   files?: ArrayBuffer; // zip
 };
@@ -91,10 +91,10 @@ export type IRunCodeStatus = {
 };
 
 export enum IRunCodeTestResult {
-  OK,
-  TIMEOUT,
-  ERROR,
-  CANCELED,
+  OK = 'ok',
+  TIMEOUT = 'timeout',
+  ERROR = 'error',
+  CANCELED = 'canceled',
 }
 
 export type IRunCodeTestOutput = {
