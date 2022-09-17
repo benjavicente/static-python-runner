@@ -1,0 +1,60 @@
+name: Deploy to GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/configure-pages@v2
+      - uses: actions/setup-node@v3
+
+      - uses: pnpm/action-setup@v2.0.1
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+
+      - id: pnpm-cache
+        run: echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-store-
+
+      - run: pnpm install
+
+      - run: pnpm run build
+
+      - uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./dist
+
+  upload:
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
