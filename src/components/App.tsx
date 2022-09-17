@@ -6,14 +6,13 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import ReactDiffViewer from 'react-diff-viewer';
 import { useTestCases, useCodeRun } from '~/lib/CodeContext';
-import readmeExample from '~/../public/Readme.md?raw';
+import readmeExample from '~/assets/Readme.md?raw';
 import CodeMirror from '@uiw/react-codemirror';
 import { ITestCaseStatus } from "../lib/types"
 
 
 export default function App() {
   const testCases = useTestCases();
-  console.log(testCases);
   const runCode = useCodeRun();
   const [seeDiff, setSeeDiff] = useState(false);
   const [code, setCode] = useState("# Escribe tú código aquí\n");

@@ -6,7 +6,7 @@ import CodeContext from '~/lib/CodeContext';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <CodeContext url="/public/testCases/testCases.json">
+    <CodeContext url="/testCases/testCases.json">
       <App />
     </CodeContext>
   </React.StrictMode>,

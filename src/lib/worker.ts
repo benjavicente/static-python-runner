@@ -1,8 +1,8 @@
 /// <reference lib="webworker" />
-import type { PyodideInterface } from 'pyodide';
-import type { IFileObj, ITestCase, IRunCodeTestOutput } from './types';
+import type { PyodideInterface } from "pyodide";
+import type { IFileObj, ITestCase, IRunCodeTestOutput } from "./types";
 
-importScripts('https://cdn.jsdelivr.net/pyodide/v0.21.2/full/pyodide.js');
+importScripts("https://cdn.jsdelivr.net/pyodide/v0.21.2/full/pyodide.js");
 
 const isRunning = false;
 let interruptBuffer;
@@ -20,7 +20,7 @@ const pythonConsole = {
 };
 
 const pyoditeOptions = {
-  homedir: '/code',
+  homedir: "/code",
   stdout: (data: string) => pythonConsole.stdout.push(data),
   stderr: (data: string) => pythonConsole.stderr.push(data),
   stdin: () => pythonConsole.stdin.shift(),
@@ -32,10 +32,8 @@ async function loadPyodideAndPackages() {
   pyodide = await loadPyodide(pyoditeOptions);
 }
 
-async function runTestCase({ files, test }: { files: IFileObj[], test: ITestCase }) {
+async function runTestCase({ files, test }: { files: IFileObj[]; test: ITestCase }) {
   await pyodideReadyPromise;
-  console.log('pyodide', test);
-  // https://emscripten.org/docs/api_reference/Filesystem-API.html
   //! 1. Resetear los archivos virtuales que hay
   //! 2. Cargar los archivos del alumno
   files.forEach((file) => {
@@ -43,12 +41,11 @@ async function runTestCase({ files, test }: { files: IFileObj[], test: ITestCase
   });
   // 3. Cargar los archivos del test
   if (test.files) {
-    pyodide.unpackArchive(test.files, 'zip');
+    pyodide.unpackArchive(test.files, "zip");
   }
   // 4. Limpiar y setear input, output y stderr
   pythonConsole.resetWithInput(test.input);
   //! 5. Ejecutar el test a partir del entrypoitn
-  console.log(pyodide.FS.readdir('/code'), test.entrypoint);
   try {
     await pyodide.runPythonAsync(`
       import sys
@@ -60,7 +57,7 @@ async function runTestCase({ files, test }: { files: IFileObj[], test: ITestCase
       import ${test.entrypoint}
       `);
   } catch (error) {
-    console.log('error', error);
+    console.log("error", error);
   }
   // 6. Devolver el resultado
   const { stdout, stderr } = pythonConsole;
@@ -70,18 +67,18 @@ async function runTestCase({ files, test }: { files: IFileObj[], test: ITestCase
     output: stdout,
     error: stderr,
     time: -1,
-    result: 'ok',
+    result: "ok",
   } as IRunCodeTestOutput;
   postMessage(result);
-  console.log('output', { output: stdout, error: stderr });
   // postMessage({ type: 'testResult', payload: { output, error } });
 }
 
-addEventListener('message', async ({ data: { cmd, ...data } }) => {
-  console.log('worker received message', cmd, data);
+addEventListener("message", async ({ data: { cmd, ...data } }) => {
   switch (cmd) {
-    case 'run': await runTestCase(data); break;
-    case 'setInterruptBuffer':
+    case "run":
+      await runTestCase(data);
+      break;
+    case "setInterruptBuffer":
       break;
     default:
       break;
