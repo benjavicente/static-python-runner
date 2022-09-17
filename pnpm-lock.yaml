@@ -1,6 +1,8 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@codemirror/lang-python': ^6.0.1
+  '@codemirror/view': ^6.2.4
   '@tailwindcss/typography': ^0.5.7
   '@types/node': ^18.7.18
   '@types/react': ^18.0.17
@@ -25,7 +27,9 @@ specifiers:
   vite-plugin-cross-origin-isolation: ^0.1.6
 
 dependencies:
-  '@uiw/react-codemirror': 4.12.1_biqbaboplfbrettd7655fr4n2y
+  '@codemirror/lang-python': 6.0.1
+  '@codemirror/view': 6.2.4
+  '@uiw/react-codemirror': 4.12.1_fymod43wdqrs5dzbs6sqyusiyu
   github-markdown-css: 5.1.0
   react: 18.2.0
   react-diff-viewer: 3.1.1_biqbaboplfbrettd7655fr4n2y
@@ -320,14 +324,15 @@ packages:
       '@babel/helper-validator-identifier': 7.18.6
       to-fast-properties: 2.0.0
 
-  /@codemirror/autocomplete/6.1.1_@codemirror+state@6.1.1:
+  /@codemirror/autocomplete/6.1.1_i7qyacltc5yis7vfg7tlbipfum:
     resolution: {integrity: sha512-Xqkyyrvuk7Ovg3e/XWxlIv+ez4URpTEGwolLYA5r5ROSwsyObsizdLoA13Dh8K5AMQM7z3SB36r0MfprrGWlrw==}
     peerDependencies:
       '@codemirror/state': ^6.0.0
+      '@codemirror/view': ^6.0.0
     dependencies:
       '@codemirror/language': 6.2.1
       '@codemirror/state': 6.1.1
-      '@codemirror/view': 6.2.3
+      '@codemirror/view': 6.2.4
       '@lezer/common': 1.0.1
     dev: false
 
@@ -336,15 +341,22 @@ packages:
     dependencies:
       '@codemirror/language': 6.2.1
       '@codemirror/state': 6.1.1
-      '@codemirror/view': 6.2.3
+      '@codemirror/view': 6.2.4
       '@lezer/common': 1.0.1
+    dev: false
+
+  /@codemirror/lang-python/6.0.1:
+    resolution: {integrity: sha512-w2jTSY+LgXnK7iIBLgMxk6xtJhZHkcxcGGveuq9zYmncURmOTFXKnDvBaBClNIHKgjkHXZqGK8ZduCMK23hZPA==}
+    dependencies:
+      '@codemirror/language': 6.2.1
+      '@lezer/python': 1.1.0
     dev: false
 
   /@codemirror/language/6.2.1:
     resolution: {integrity: sha512-MC3svxuvIj0MRpFlGHxLS6vPyIdbTr2KKPEW46kCoCXw2ktb4NTkpkPBI/lSP/FoNXLCBJ0mrnUi1OoZxtpW1Q==}
     dependencies:
       '@codemirror/state': 6.1.1
-      '@codemirror/view': 6.2.3
+      '@codemirror/view': 6.2.4
       '@lezer/common': 1.0.1
       '@lezer/highlight': 1.0.0
       '@lezer/lr': 1.2.3
@@ -355,7 +367,7 @@ packages:
     resolution: {integrity: sha512-nUUXcJW1Xp54kNs+a1ToPLK8MadO0rMTnJB8Zk4Z8gBdrN0kqV7uvUraU/T2yqg+grDNR38Vmy/MrhQN/RgwiA==}
     dependencies:
       '@codemirror/state': 6.1.1
-      '@codemirror/view': 6.2.3
+      '@codemirror/view': 6.2.4
       crelt: 1.0.5
     dev: false
 
@@ -363,7 +375,7 @@ packages:
     resolution: {integrity: sha512-FVhpUvPFUJe8lg2EQJTTcF4RNI9d/OC3PVitvOfhv5OuY7ZgtMfJl22o5eMkzOEsUY2Wxe7BKGLpe2UI5Wq3PQ==}
     dependencies:
       '@codemirror/state': 6.1.1
-      '@codemirror/view': 6.2.3
+      '@codemirror/view': 6.2.4
       crelt: 1.0.5
     dev: false
 
@@ -376,12 +388,12 @@ packages:
     dependencies:
       '@codemirror/language': 6.2.1
       '@codemirror/state': 6.1.1
-      '@codemirror/view': 6.2.3
+      '@codemirror/view': 6.2.4
       '@lezer/highlight': 1.0.0
     dev: false
 
-  /@codemirror/view/6.2.3:
-    resolution: {integrity: sha512-cgN9gWS9+kv9+eOgVJWMrGUk4EwYKBZpuFYvxIlu4CmMye3+U+gMzuZhBgtPDOCbCp30hxFIOO0MENhGfnaC/g==}
+  /@codemirror/view/6.2.4:
+    resolution: {integrity: sha512-Zc5qDv+CD2ubWs6ShGJL0tf4y2w5vObdg7Eus0ouhg9g5lrvsAnwO9PvavDZdK4bpH6O+cnNDRhFlvDuieXo/g==}
     dependencies:
       '@codemirror/state': 6.1.1
       style-mod: 4.0.0
@@ -498,6 +510,13 @@ packages:
       '@lezer/common': 1.0.1
     dev: false
 
+  /@lezer/python/1.1.0:
+    resolution: {integrity: sha512-FVPp2usfj3zZuc+2RidXAY94WAcsHQ3dbKDbXuZgoAwUungAcXwd3EWXiWQvwNqbae+ek51bWi8dwbiQqweWCg==}
+    dependencies:
+      '@lezer/highlight': 1.0.0
+      '@lezer/lr': 1.2.3
+    dev: false
+
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -592,19 +611,21 @@ packages:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
     dev: false
 
-  /@uiw/codemirror-extensions-basic-setup/4.12.1:
+  /@uiw/codemirror-extensions-basic-setup/4.12.1_@codemirror+view@6.2.4:
     resolution: {integrity: sha512-hA8RD6Xr/GpF/FI+Dr1gnhqKnu+SIwvuQIH3ZsQccacuJFo7w1pz8WxXLEkHxKLNhEJds7nhbcJ6TXQGka4qsg==}
+    peerDependencies:
+      '@codemirror/view': '>=6.0.0'
     dependencies:
-      '@codemirror/autocomplete': 6.1.1_@codemirror+state@6.1.1
+      '@codemirror/autocomplete': 6.1.1_i7qyacltc5yis7vfg7tlbipfum
       '@codemirror/commands': 6.1.0
       '@codemirror/language': 6.2.1
       '@codemirror/lint': 6.0.0
       '@codemirror/search': 6.2.0
       '@codemirror/state': 6.1.1
-      '@codemirror/view': 6.2.3
+      '@codemirror/view': 6.2.4
     dev: false
 
-  /@uiw/react-codemirror/4.12.1_biqbaboplfbrettd7655fr4n2y:
+  /@uiw/react-codemirror/4.12.1_fymod43wdqrs5dzbs6sqyusiyu:
     resolution: {integrity: sha512-2QnbaGp9qn1iMpydaw6QdV6GcLCrnxHS9NTH+9lepmGrfa0Oh02lPz04wk9QMPzfGOwTkkznw3oygu3GfNOODw==}
     peerDependencies:
       '@codemirror/view': '>=6.0.0'
@@ -615,7 +636,8 @@ packages:
       '@codemirror/commands': 6.1.0
       '@codemirror/state': 6.1.1
       '@codemirror/theme-one-dark': 6.0.0
-      '@uiw/codemirror-extensions-basic-setup': 4.12.1
+      '@codemirror/view': 6.2.4
+      '@uiw/codemirror-extensions-basic-setup': 4.12.1_@codemirror+view@6.2.4
       codemirror: 6.0.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -802,13 +824,13 @@ packages:
   /codemirror/6.0.1:
     resolution: {integrity: sha512-J8j+nZ+CdWmIeFIGXEFbFPtpiYacFMDR8GlHK3IyHQJMCaVRfGx9NT+Hxivv1ckLWPvNdZqndbr/7lVhrf/Svg==}
     dependencies:
-      '@codemirror/autocomplete': 6.1.1_@codemirror+state@6.1.1
+      '@codemirror/autocomplete': 6.1.1_i7qyacltc5yis7vfg7tlbipfum
       '@codemirror/commands': 6.1.0
       '@codemirror/language': 6.2.1
       '@codemirror/lint': 6.0.0
       '@codemirror/search': 6.2.0
       '@codemirror/state': 6.1.1
-      '@codemirror/view': 6.2.3
+      '@codemirror/view': 6.2.4
     dev: false
 
   /color-convert/1.9.3:
