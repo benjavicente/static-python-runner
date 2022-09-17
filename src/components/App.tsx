@@ -63,8 +63,8 @@ export default function App() {
                       <div>
                         <p className="font-bold">Diff:</p>
                         <ReactDiffViewer
-                          oldValue={testCase.expectedOutput.join('\n')}
-                          newValue={testCase.result.output.join('\n')}
+                          oldValue={testCase.result.output.join('\n')}
+                          newValue={testCase.expectedOutput.join('\n')}
                           splitView
                         />
                       </div>
