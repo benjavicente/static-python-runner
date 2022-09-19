@@ -1,0 +1,54 @@
+{
+  "testCases": [
+    {
+      "isPublic": true,
+      "id": 1,
+      "name": "Público #01",
+      "input": ["vaixkr"],
+      "entrypoint": "main.py",
+      "points": 0,
+      "expectedOutput": ["2022", "Oh no descubriste el secreto"],
+      "zipFilesUrl": "TCP01.zip"
+    },
+    {
+      "isPublic": true,
+      "id": 2,
+      "name": "Público #02",
+      "input": ["aeeeiiukkl"],
+      "entrypoint": "main.py",
+      "points": 0,
+      "expectedOutput": ["888888", "Intro intro intro!"],
+      "zipFilesUrl": "TCP02.zip"
+    },
+    {
+      "isPublic": true,
+      "id": 3,
+      "name": "Público #03",
+      "input": ["qwftaaa"],
+      "entrypoint": "main.py",
+      "points": 0,
+      "expectedOutput": ["101101", "El hechizero esta cerca..."],
+      "zipFilesUrl": "TCP03.zip"
+    },
+    {
+      "isPublic": true,
+      "id": 4,
+      "name": "Público #04",
+      "input": ["mapzirdj"],
+      "entrypoint": "main.py",
+      "points": 0,
+      "expectedOutput": ["1103", "Vas por excelente camino..."],
+      "zipFilesUrl": "TCP04.zip"
+    },
+    {
+      "isPublic": true,
+      "id": 5,
+      "name": "Público #05",
+      "input": ["fefefrefw"],
+      "entrypoint": "main.py",
+      "points": 0,
+      "expectedOutput": ["31636494123171359", "ocmgkapkbf"],
+      "zipFilesUrl": "TCP05.zip"
+    }
+  ]
+}
