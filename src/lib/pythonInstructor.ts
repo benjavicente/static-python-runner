@@ -5,7 +5,11 @@ type Resolver = (data: IRunnerOutput) => void;
 type IPostMessage = (msg: IRunnerCmdResponse) => void;
 type PythonWorker = { postMessage: IPostMessage } & Worker;
 
+let nextId = 0;
+const id = () => nextId++;
+
 export type PythonInstructor = {
+  id: number;
   runCode: (args: IRunnerArgs) => Promise<IRunnerOutput>;
   interrupt: () => void;
   destroy: () => void;
@@ -29,14 +33,15 @@ export const createPythonInstructor = (): Promise<PythonInstructor> =>
     const w: PythonWorker = new Worker(new URL("../python.worker.ts", import.meta.url));
     const interruptBuffer = new Uint8Array(new SharedArrayBuffer(1));
     let currentResolver: Resolver | undefined = undefined;
-    let startTime: number | undefined = undefined;
+    let isRunning = false;
 
     const response = {
+      id: id(),
       destroy: () => w.terminate(),
       runCode: (args: IRunnerArgs) => {
-        if (startTime) throw new Error("Cannot run code while running code");
+        if (isRunning) throw new Error("Cannot run code while running another code");
         interruptBuffer[0] = 0;
-        startTime = Date.now();
+        isRunning = true;
         const promise: Promise<IRunnerOutput> = new Promise((runnerResolver) => (currentResolver = runnerResolver));
         w.postMessage({ cmd: RUN_CODE, ...args });
         return promise;
@@ -51,10 +56,10 @@ export const createPythonInstructor = (): Promise<PythonInstructor> =>
         case STATUS:
           return createResolver(response);
         case RUN_CODE:
-          if (currentResolver && startTime) {
-            // Note(benjavicente): Aquí se podría retornar más datos de ejecución
-            const { stdout, stderr, error } = data;
-            currentResolver({ stdout, stderr, error, time: Date.now() - startTime });
+          if (currentResolver && isRunning) {
+            const { cmd, ...result } = data;
+            currentResolver(result);
+            isRunning = false;
           }
       }
     };

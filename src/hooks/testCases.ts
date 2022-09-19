@@ -9,7 +9,7 @@ async function loadTestCase(baseUrl: string, { zipFilesUrl, ...test }: ITestCase
   return { zipFiles, ...test };
 }
 
-export default function useTestCasesLoader(testCasesData: ITestCasesData) {
+export default function useTestCasesLoader(testCasesData: ITestCasesData): [ITestCaseLoaded[], boolean] {
   const [testCases, setTestCases] = useState<ITestCaseLoaded[]>([]);
   const [loading, setLoading] = useState(true);
   const { baseUrl, testCases: testCasesFiles } = testCasesData;

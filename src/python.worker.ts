@@ -1,6 +1,7 @@
 /// <reference lib="webworker" />
 import type { loadPyodide as loadPyodideValue, PyodideInterface } from "pyodide";
-import { IRunnerArgs, IRunnerCmd, IRunnerCmdResponse, RUN_CODE, SET_INTERRUPT, STATUS } from "~/types/python.worker";
+import type { IRunnerArgs, IRunnerCmd, IRunnerCmdResponse, IRunnerOutput } from "~/types/python.worker";
+import { RUN_CODE, SET_INTERRUPT, STATUS } from "~/types/python.worker";
 declare const loadPyodide: typeof loadPyodideValue;
 declare type PyoditeLoaderOptions = Parameters<typeof loadPyodideValue>[0];
 
@@ -10,7 +11,6 @@ const state = {
   stdout: [] as string[],
   stderr: [] as string[],
   stdin: [] as string[],
-  interruptBuffer: new Uint8Array(1),
   resetWithInput: (input: string[]) => {
     state.stdout = [];
     state.stderr = [];
@@ -34,7 +34,7 @@ for path in Path.cwd().iterdir():
 import ${module}
 `;
 
-async function runCode({ files, zipFiles, input, entrypoint }: IRunnerArgs) {
+async function runCode({ files, zipFiles, input, entrypoint }: IRunnerArgs): Promise<IRunnerOutput> {
   // 0. Reset old state
   let error = false;
   state.resetWithInput(input);
@@ -47,20 +47,23 @@ async function runCode({ files, zipFiles, input, entrypoint }: IRunnerArgs) {
     pyodide.unpackArchive(zipFiles, "zip");
   }
   // 3. Run the code
+  const initialTIme = Date.now();
   try {
     await pyodide.runPythonAsync(pythonEntry(entrypoint));
-  } catch (error) {
+  } catch (exception) {
     error = true;
+    // This should be avoided, but it's a workaround for now
+    state.stderr.push(...((exception as any).message as string).split("\n"));
   }
   // 4. Return the output
-  return { stdout: state.stdout, stderr: state.stderr, error };
+  return { stdout: state.stdout, stderr: state.stderr, error, time: Date.now() - initialTIme };
 }
 
 async function handleMessage(data: IRunnerCmd) {
   if (data.cmd === RUN_CODE) {
     return runCode(data);
   } else if (data.cmd === SET_INTERRUPT) {
-    state.interruptBuffer = data.interruptBuffer;
+    pyodide.setInterruptBuffer(data.interruptBuffer);
   } else if (data.cmd === STATUS) {
     return { status: "ok" };
   }
