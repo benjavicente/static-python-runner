@@ -27,7 +27,6 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const readmeContent = await fs.readFile(path.join(processBasePath, "readme.md"), "utf-8");
   const testCasesRawContent = await fs.readFile(path.join(processBasePath, "testCases.json"), "utf-8");
   const testCasesData = JSON.parse(testCasesRawContent);
-  console.log(testCasesData);
   return {
     props: { readmeContent, testCasesData: { ...testCasesData, baseUrl: `${basePath || ""}/exercises/${exerciseId}` } },
   };
@@ -109,6 +108,7 @@ export default function Exercise({ readmeContent, testCasesData }: Props) {
           <p className='text-xl font-medium px-2 pb-4 cursor-pointer'>
             Correct answers {correctAnswers} / {testCases.length}
           </p>
+          <progress className="progress progress-primary w-full" value={isLoading ? 0 : correctAnswers / testCases.length} max="1" />
         </div>
         <ul className="flex flex-col gap-2">
           {tests.map(([testCase, result]) => (
