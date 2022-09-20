@@ -2,7 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  basePath: process.env.BASE_URL,
+  // remove the slash in the beginning of the path
+  basePath: "/" + process.env.BASE_URL.replace(/^\//, ""),
   eslint: {
     ignoreDuringBuilds: true,
   },
