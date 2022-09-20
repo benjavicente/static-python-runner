@@ -17,9 +17,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
 
 export default function Home({ exercises }: Props) {
   const test = async () => {
-    console.log("??");
     const pythonInstructor = await createPythonInstructor();
-    console.log("loaded");
     const test = {
       entrypoint: "main",
       input: ["Hello World"],

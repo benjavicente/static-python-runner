@@ -39,7 +39,7 @@ export type ICodeContext = {
   isRunning: boolean;
 };
 
-// TODO: ver como organizar los test cases y el queue de estos
+
 export default function PythonRunnerProvider({ ...props }) {
   const [threads, setThreads] = useState(2);
   const workers = useWorkers(threads);
